@@ -31,7 +31,9 @@ env:
     - HOST_CLOUD=azure
 
 addons:
-  # currently nothing
+  apt:
+    sources:
+      - debian-sid
 
 before_install:
   # currently nothing
