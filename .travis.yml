@@ -1,0 +1,121 @@
+---
+language: python # (Ansible)
+
+sudo: required
+
+services:
+  - docker
+
+branches:
+  except:
+    - /^experimental\/.*$/
+    - /^exp\/.*$/
+    - /^development\/.*$/
+    - /^dev\/.*$/
+    - /^testing\/.*$/
+    - /^test\/.*$/
+    - /^doc\/.*$/
+    - /^docs\/.*$/
+    - /^documentation\/.*$/
+
+env:
+  global:
+    - KN_BRANCH="feature/phenomenal-kn"
+    - PROVISIONER="andersla/provisioners:feature-phenomenal-kn"
+    - PRESET="phenomenal"
+
+  matrix:
+    - HOST_CLOUD=openstack
+    - HOST_CLOUD=gce
+    - HOST_CLOUD=aws
+    - HOST_CLOUD=azure
+
+addons:
+  # currently nothing
+
+before_install:
+  # currently nothing
+
+install:
+
+  # Build Docker image
+  # Create a docker image tag out of branch-name where / is replaced by -
+  - docker build -t "$PROVISIONER" .
+
+before_script:
+
+  # Copy kn bin
+  - curl -f "https://raw.githubusercontent.com/kubenow/KubeNow/$KN_BRANCH/bin/kn" -o "/tmp/kn"
+  - sudo mv /tmp/kn /usr/local/bin/
+  - sudo chmod +x /usr/local/bin/kn
+
+  # Init test deployment
+  - kn init --preset $PRESET ${HOST_CLOUD} test-deployment
+  - cd test-deployment
+
+  # Overwrite ssh-key for debug purposes
+  - echo -e "$TRAVIS_SSH_KEY_PRIV" > ssh_key
+  - echo -e "$TRAVIS_SSH_KEY_PUB" > ssh_key.pub
+
+  # RENDER CONFIGURATION
+
+  # Common
+  - sed -i -e "s/your-cluster-prefix/phnmnl-plugin-ci-${TRAVIS_BUILD_NUMBER}-${HOST_CLOUD}/g" terraform.tfvars
+  # AWS
+  - sed -i -e "s/your-acces-key-id/${AWS_ACCESS_KEY_ID}/g" terraform.tfvars
+  - sed -i -e "s#your-secret-access-key#${AWS_SECRET_ACCESS_KEY}#g" terraform.tfvars
+  - sed -i -e "s/eu-west-1/${AWS_DEFAULT_REGION}/g" terraform.tfvars
+  # GCE
+  - printf '%s\n' "$GCE_CREDENTIALS" > "./service-account.json"
+  - sed -i -e "s/your_project_id/${GCE_PROJECT_ID}/g" terraform.tfvars
+  # AZURE
+  - sed -i -e "s/your-subscription_id/${AZURE_SUBSCRIPTION_ID}/g" terraform.tfvars
+  - sed -i -e "s/your-client_id/${AZURE_CLIENT_ID}/g" terraform.tfvars
+  - sed -i -e "s/your-client_secret/${AZURE_CLIENT_SECRET}/g" terraform.tfvars
+  - sed -i -e "s/your-tenant_id/${AZURE_TENANT_ID}/g" terraform.tfvars
+  # OS
+  - sed -i -e "s/your-pool-name/${OS_POOL_NAME}/g" terraform.tfvars
+  - sed -i -e "s/external-net-uuid/${OS_EXTERNAL_NET_UUID}/g" terraform.tfvars
+  - sed -i -e "s/your-master-flavor/${OS_MASTER_FLAVOR}/g" terraform.tfvars
+  - sed -i -e "s/your-node-flavor/${OS_NODE_FLAVOR}/g" terraform.tfvars
+  - sed -i -e "s/your-edge-flavor/${OS_EDGE_FLAVOR}/g" terraform.tfvars
+  - sed -i -e "s/your-glusternode-flavor/${OS_NODE_FLAVOR}/g" terraform.tfvars
+  # Enable edges
+  # - sed -i -e "s/# edge/edge/g" terraform.tfvars
+  # Enable glusternodes
+  - sed -i -e "s/# glusternode/glusternode/g" terraform.tfvars
+  # Cloudflare
+  - sed -i -e "s/# use_cloudflare/use_cloudflare/g" terraform.tfvars
+  - sed -i -e "s/# cloudflare_email = \"your-cloudflare-email\"/cloudflare_email = \"${CI_CLOUDFLARE_EMAIL}\"/g" terraform.tfvars
+  - sed -i -e "s/# cloudflare_token = \"your-cloudflare-token\"/cloudflare_token = \"${CI_CLOUDFLARE_TOKEN}\"/g" terraform.tfvars
+  - sed -i -e "s/# cloudflare_domain = \"your-domain-name\"/cloudflare_domain = \"${CI_CLOUDFLARE_DOMAIN}\"/g" terraform.tfvars
+  - >
+    sed -i -e
+    "s/# cloudflare_subdomain = \"your-subdomain-name\"/cloudflare_subdomain = \"phnmnl-plugin-ci-${TRAVIS_BUILD_NUMBER}-${HOST_CLOUD}\"/g"
+    terraform.tfvars
+
+
+script:
+
+  # Deploy
+  - travis_retry kn apply
+
+after_script:
+  - export TERRAFORM_OPT="-force" && travis_retry kn destroy
+  - travis_retry terraform destroy -force "$HOST_CLOUD" # in case there is some problem with kn
+
+jobs:
+  include:
+    # Docker push stage
+    - stage: Push container
+      before_install: true
+      install: true
+      before_script: true
+      after_script: true
+      script:
+        # Build and push Docker image (needs to be build again in this stage)
+        - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+        - docker build -t $PROVISIONER .
+        - docker push $PROVISIONER
+        - docker push $PROVISIONER
+
