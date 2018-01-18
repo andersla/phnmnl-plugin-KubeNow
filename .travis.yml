@@ -100,7 +100,7 @@ before_script:
 script:
 
   # Deploy
-  - travis_retry kn apply
+  - kn apply
 
 after_script:
   - export TERRAFORM_OPT="-force" && travis_retry kn destroy
