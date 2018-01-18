@@ -44,7 +44,7 @@ provision = {
 
   "action" = {
     "type"     = "ansible-playbook"
-    "playbook" = "install-phenomenal-playbook.yml"
+    "playbook" = "playbooks_phnmnl/install-phenomenal-playbook.yml"
     "extra_vars" = {
       "galaxy_admin_email"    = "yoourname@bla.bla.com"
       "galaxy_admin_password" = "password"

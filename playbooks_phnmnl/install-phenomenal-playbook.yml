@@ -26,14 +26,14 @@
     # Wait for all default kubernetes pods to be ready
     - name: Wait for all default kubernetes pods to be ready
       include_role:
-        name: playbooks_phnmnl/roles/wait-for-all-pods-ready
+        name: roles/wait-for-all-pods-ready
 
     # Create nfs or gluster server
 
     # nfs
     - name: shared-volume-nfs
       include_role:
-        name: playbooks/roles/shared-volume-nfs
+        name: ../playbooks/roles/shared-volume-nfs
       vars:
         nfs_server: "{{nfs_server_host}}"
         nfs_vol_size: "{{nfs_volume_size}}"
@@ -43,14 +43,14 @@
 
     # Gluster
     - include_role:
-        name: playbooks/roles/heketi-gluster
+        name: ../playbooks/roles/heketi-gluster
       when:
         nfs_volume_size is undefined or (nfs_volume_size | int) == 0
 
     # Create Persistent Volume Claim
     - name: persistent volume claim
       include_role:
-        name: playbooks/roles/pvc
+        name: ../playbooks/roles/pvc
       vars:
         claim_name: "{{pvc_name}}"
         storage: "{{pvc_storage}}"
@@ -58,7 +58,7 @@
     # Galaxy
     - name: Galaxy
       include_role:
-        name: playbooks_phnmnl/roles/galaxy
+        name: roles/galaxy
       vars:
         galaxy_chart_version: "0.3.2"
         hostname: "{{galaxy_hostname}}{{proxied_suffix}}"
@@ -75,7 +75,7 @@
     # Jupyter
     - name: Jupyter
       include_role:
-        name: playbooks_phnmnl/roles/jupyter
+        name: roles/jupyter
       vars:
         jupyter_chart_version: "0.1.2"
         hostname: "{{jupyter_hostname}}{{proxied_suffix}}"
@@ -91,7 +91,7 @@
     # Luigi
     - name: Luigi
       include_role:
-        name: playbooks_phnmnl/roles/luigi
+        name: roles/luigi
       vars:
         hostname: "{{luigi_hostname}}{{proxied_suffix}}"
         luigi_resource_req_memory: "1G"
@@ -102,7 +102,7 @@
     # Dashboard
     - name: Dashboard
       include_role:
-        name: playbooks_phnmnl/roles/kubernetes-dashboard
+        name: roles/kubernetes-dashboard
       vars:
         dashboard_username: "{{dashboard_username}}"
         dashboard_password: "{{dashboard_password}}"
@@ -114,14 +114,14 @@
     # Heapster (for Dashboard)
     - name: Heapster (for Dashboard)
       include_role:
-        name: playbooks_phnmnl/roles/heapster
+        name: roles/heapster
       when:
         dashboard_include == true
 
     # Add demo-data to jupyter from repo
     - name: Add mtbls233 data
       include_role:
-        name: playbooks_phnmnl/roles/mtbls233-demo
+        name: roles/mtbls233-demo
       when:
         jupyter_include == true
 
