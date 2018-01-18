@@ -1,3 +1,3 @@
 # phnmnl-plugin-KubeNow
 
-Here is supposed to ...
+Here is supposed to ..
