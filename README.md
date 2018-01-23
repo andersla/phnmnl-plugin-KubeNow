@@ -79,22 +79,22 @@ Inside this configuration directory you will need to edit the file `terraform.tf
 - **`cloudflare_token`**: an authentication token that you can generate from the Cloudflare web interface
 - **`cloudflare_domain`**: a zone that you created in your Cloudflare account. This typically matches your domain name (e.g. somedomain.com)
 
-*Galaxy* (In the `provision` sub-section of the terraform.tfvars config file)
+*Galaxy* - (In the `provision` sub-section of the terraform.tfvars config file)
 - **`galaxy_admin_email`**: the local galaxy admin (you?)
 - **`galaxy_admin_password`**: min 6 characters admin password
 
-*Jupyter*
+*Jupyter* - (In the `provision` sub-section of the terraform.tfvars config file)
 In the provision-section of the terraform.tfvars config file
 - **`jupyter_password`**: password for your notebook
 
-*Kubernetes dashboard*
+*Kubernetes dashboard* - (In the `provision` sub-section of the terraform.tfvars config file)
 In the provision-section of the terraform.tfvars config file
 - **`dashboard_username`**: username to access your kubernetes dashboard
 - **`dashboard_password`**: password for your kubernetes dashboard
 
 **Once you are done with your settings you are ready to deploy the cluster:**
 
-Now you need to source your openstack-rc-credentials file
+Now you need to source your openstack-rc-credentials file:
 
     source /path/to/openstack/credentials
 
