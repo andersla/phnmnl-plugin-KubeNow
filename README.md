@@ -16,15 +16,15 @@ The only prerequisite that need to be installed on your local machine is:
 
 Now follow the links below depending on your cloud provider:
 
-[Deploy on Amazon Web Services](Deploy-on-Amazon-Web-Services)
+[Deploy on Amazon Web Services]
 
-[Deploy on Google Cloud Platform](Deploy-on-Google-Cloud-Platform)
+[Deploy on Google Cloud Platform]
 
-[Deploy on Microsoft Azure](Deploy-on-Microsoft-Azure)
+[Deploy on Microsoft Azure]
 
-[Deploy on Openstack](Deploy-on-OpenStack)
+[Deploy on Openstack]
 
-[Deploy on Bare metal (KVM)](Deploy-on-a-local-server-(bare-metal))
+[Deploy on Bare metal (KVM)]
 
 
 # OpenStack
