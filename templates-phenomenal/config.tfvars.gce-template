@@ -61,32 +61,16 @@ provision = {
   }
 
 # "action" = {
-#   "type"            = "helm"
-#   "chart_name"      = "gluster-s3"
-#   "chart_repo_name" = "kubenow"
-#   "chart_repo"      = "https://kubenow.github.io/helm-charts/"
-#   "release_name"    = "my-glusters3"
-#   values = {
-#     "glusters3_main_pvc_size" = "100G"
-#     "glusters3_meta_pvc_size" = "10G"
-#     "glusters3_account"       = "myaccount"
-#     "glusters3_user"          = "myuser"
-#     "glusters3_password"      = "mypassword"
-#   }
-# }
-#
-# "action" = {
-#   "type"            = "helm"
-#   "chart_name"      = "pachyderm"
-#   "chart_repo_name" = "stable"
-#   "chart_repo"      = ""
-#   "release_name"    = "my-pachyderm"
-#   values = {
-#     "glusters3_main_pvc_size" = "100G"
-#     "glusters3_meta_pvc_size" = "10G"
-#     "glusters3_account"       = "myaccount"
-#     "glusters3_user"          = "myuser"
-#     "glusters3_password"      = "mypassword"
+#   "type"     = "ansible-playbook"
+#   "playbook" = "playbooks/install-pachyderm-minio-playbook.yml"
+#   "extra_vars" = {
+#     "minio_release_name" = "minio-release"
+#     "minio_pvc_size"  = "100G"
+#     "minio_accesskey" = "myaccesskey"
+#     "minio_secretkey" = "mysecretkey"
+#     "minio_replicas" = "4"
+#     "pachyderm_release_name"  = "pachyderm-release"
+#     "pachyderm_etcd_pvc_size"  = "10G"
 #   }
 # }
 }
