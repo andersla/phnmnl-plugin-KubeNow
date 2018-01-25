@@ -15,12 +15,12 @@
    retries: 120
    delay: 5
 
-- name: wait for Pachyderm to be Ready
-  command: >
-    kubectl get pods --namespace=default
-    -o jsonpath='{.items[?(@.spec.containers[*].name=="pachd")].status.containerStatuses[*].ready}'
-  register: get_is_ready
-  until: get_is_ready.stdout | match( '^(true\s)*true$' )
-  # Wait for 10 minutes
-  retries: 120
-  delay: 5
+ - name: wait for Pachyderm to be Ready
+   command: >
+     kubectl get pods --namespace=default
+     -o jsonpath='{.items[?(@.spec.containers[*].name=="pachd")].status.containerStatuses[*].ready}'
+   register: get_is_ready
+   until: get_is_ready.stdout | match( '^(true\s)*true$' )
+   # Wait for 10 minutes
+   retries: 120
+   delay: 5
