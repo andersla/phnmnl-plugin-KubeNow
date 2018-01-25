@@ -3,6 +3,11 @@ cluster_prefix = "your-cluster-prefix" # Your cluster prefix
 external_network_uuid = "external-net-uuid" # The uuid of the external network in the OpenStack tenancy
 floating_ip_pool = "your-pool-name" # Usually same as external_network_uuid
 
+# If you need a specific DNS server uncomment and provide its IP here,
+# or if your cloud provider blocks external nameservers,
+# uncomment and leave empty for provider automatic configuration
+# dns_nameservers=""
+
 # Master configuration
 # obs: too small flavors might cause diffuse errors on your installation
 master_flavor = "your-master-flavor"
