@@ -92,6 +92,15 @@ In the provision-section of the config.tfvars config file
 - **`dashboard_username`**: username to access your kubernetes dashboard
 - **`dashboard_password`**: password for your kubernetes dashboard
 
+*Pachyderm + Minio (optional)*
+- **`TF_VAR_pachyderm_release_name`**: a release name for the Pachyderm service
+- **`TF_VAR_pachyderm_etcd_pvc_size`**: storage dedicated for etcd (In GB)
+- **`TF_VAR_minio_release_name`**: release name for the Minio service
+- **`TF_VAR_minio_pvc_size`**: storage dedicated for the Minio service (In GB)
+- **`TF_VAR_minio_accesskey`**: access key for the S3 endpoint
+- **`TF_VAR_minio_secretkey`**: secret key for the S3 endpoint
+- **`TF_VAR_minio_replicas`**: number of replicas of the Minio service
+
 **Once you are done with your settings you are ready to deploy the cluster:**
 
 Now you need to source your openstack-rc-credentials file:
@@ -108,6 +117,12 @@ And then create the VRE:
     Jupyter        = http://notebook.<your-prefix>.<yourdomain>
     Luigi          = http://luigi.<your-prefix>.<yourdomain>
     Kube-dashboard = http://dashboard.<your-prefix>.<yourdomain>
+    Pachyderm      = by ssh-ing onto your master node, and installing `pachctl`:
+
+    curl -o /tmp/pachctl.deb -L https://github.com/pachyderm/pachyderm/releases/download/v1.6.6/pachctl_1.6.6_amd64.deb && sudo dpkg -i /tmp/pachctl.deb
+
+  Please note that the `pachctl` version should correspond with the pachd service version. For more information please consult: http://pachyderm.readthedocs.io/en/latest/index.html. You can see an example on how to create pipelines here:
+
 
   and if you want to ssh into the master node:
 
