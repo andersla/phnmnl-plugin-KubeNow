@@ -6,7 +6,7 @@ floating_ip_pool = "your-pool-name" # Usually same as external_network_uuid
 # If you need a specific DNS server uncomment and provide its IP here,
 # or if your cloud provider blocks external nameservers,
 # uncomment and leave empty for provider automatic configuration
-# dns_nameservers=""
+dns_nameservers = ""
 
 # Master configuration
 # obs: too small flavors might cause diffuse errors on your installation
