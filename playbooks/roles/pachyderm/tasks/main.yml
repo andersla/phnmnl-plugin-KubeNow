@@ -6,14 +6,14 @@
      "{{ pachyderm_release_name }}" stable/pachyderm
 
  - name: wait for Pachyderm to be Running
-  command: >
-    kubectl get pods --namespace=default
-    -o jsonpath='{.items[?(@.spec.containers[*].name=="pachd")].status.phase}'
-  register: get_phase
-  until: get_phase.stdout | match('^(Running\s)*Running$')
-  # Wait for 10 minutes
-  retries: 120
-  delay: 5
+   command: >
+     kubectl get pods --namespace=default
+     -o jsonpath='{.items[?(@.spec.containers[*].name=="pachd")].status.phase}'
+   register: get_phase
+   until: get_phase.stdout | match('^(Running\s)*Running$')
+   # Wait for 10 minutes
+   retries: 120
+   delay: 5
 
 - name: wait for Pachyderm to be Ready
   command: >
