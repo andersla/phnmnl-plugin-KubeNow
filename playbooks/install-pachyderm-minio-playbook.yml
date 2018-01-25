@@ -4,9 +4,9 @@
   gather_facts: "no"
   vars:
     # Service version tags
-    minio_tag: "RELEASE.2017-12-28T01-21-00Z"
-    pachyderm_tag: "1.6.6"
-    etcd_tag: "v3.2.7"
+    minio_version: "RELEASE.2017-12-28T01-21-00Z"
+    pachyderm_version: "1.6.6"
+    etcd_version: "v3.2.7"
 
   tasks:
     # Minio
@@ -19,7 +19,7 @@
         minio_accesskey: "{{minio_accesskey}}"
         minio_secretkey: "{{minio_secretkey}}"
         minio_replicas: "{{minio_replicas}}"
-        minio_tag: "{{minio_tag}}"
+        minio_tag: "{{minio_version}}"
 
     # Pachyderm
     - name: Pachyderm
@@ -31,5 +31,5 @@
         pachyderm_etcd_pvc_size: "{{pachyderm_etcd_pvc_size}}"
         pachyderm_minio_accesskey: "{{minio_accesskey}}"
         pachyderm_minio_secretkey: "{{minio_secretkey}}"
-        pachyderm_tag: "{{pachyderm_tag}}"
-        etcd_tag: "{{etcd_tag}}"
+        pachyderm_tag: "{{pachyderm_version}}"
+        etcd_tag: "{{etcd_version}}"
