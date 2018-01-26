@@ -119,9 +119,9 @@ And then create the VRE:
     Kube-dashboard = http://dashboard.<your-prefix>.<yourdomain>
     Pachyderm      = ssh into the master node and install patchctl:
 
-    curl -o /tmp/pachctl.deb -L https://github.com/pachyderm/pachyderm/releases/download/v1.6.7/pachctl_1.6.7_amd64.deb && sudo dpkg -i /tmp/pachctl.deb
+    curl -o /tmp/pachctl.deb -L https://github.com/pachyderm/pachyderm/releases/download/v1.6.6/pachctl_1.6.6_amd64.deb && sudo dpkg -i /tmp/pachctl.deb
 
-  Please note that the `pachctl` version should correspond with the pachd service version. For more information please consult: http://pachyderm.readthedocs.io/en/latest/index.html. You can see an example on how to create pipelines here:
+  Please note that the `pachctl` version should correspond with the pachd service version. For more information please consult: http://pachyderm.readthedocs.io/en/latest/index.html. You can see an example on how to create pipelines here: https://github.com/pharmbio/MTBLS233-Pachyderm
 
 
   and if you want to ssh into the master node:
